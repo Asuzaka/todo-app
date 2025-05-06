@@ -12,9 +12,12 @@ export default function ThemeToggle() {
     const systemPref = window.matchMedia(
       "(prefers-color-scheme: light)"
     ).matches;
+
     if (localStorage.getItem("light")) {
       setLight(true);
       document.body.classList.add("light");
+    } else if (localStorage.getItem("modifiedTheme")) {
+      // skip next step
     } else if (systemPref) {
       setLight(systemPref);
       document.body.classList.add("light");
@@ -22,6 +25,9 @@ export default function ThemeToggle() {
   }, []);
 
   const toggle = () => {
+    if (!localStorage.getItem("modifiedTheme")) {
+      localStorage.setItem("modifiedTheme", "000x2b");
+    }
     if (light) {
       setLight(false);
       localStorage.removeItem("light");
