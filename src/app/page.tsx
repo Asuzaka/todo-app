@@ -1,5 +1,5 @@
-import Card from "@/shared/ui/Card";
-import MainCard from "@/shared/ui/MainCard";
+import { Card } from "@/widgets/index";
+import { MainCard } from "@/widgets/index";
 
 export default function Home() {
   return (

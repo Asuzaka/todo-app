@@ -1,41 +1,29 @@
 "use client";
 
-import React, { useState } from "react";
+import { Task } from "@/entities";
 import { FaPlus } from "react-icons/fa";
+import { addNewTask } from "@/features/index";
+import React, { useState } from "react";
 
-interface Task {
-  id: string;
-  text: string;
-  completed: boolean;
-  createdAt: Date;
-}
-
+// Prop
 interface TaskInputProps {
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
 }
 
-export default function TaskInput({ setTasks }: TaskInputProps) {
+export function TaskInput({ setTasks }: TaskInputProps) {
   const [newTask, setNewTask] = useState("");
+
   function handleKeyDown(e: React.KeyboardEvent) {
     if (e.key == "Enter") {
-      addNewTask();
+      TaskAction();
     }
   }
-  function validateInput(input: string): boolean {
-    if (input.trim() == "") return false;
-    return true;
-  }
-  function addNewTask() {
-    if (!validateInput(newTask)) return;
-    const readyTask: Task = {
-      id: crypto.randomUUID(),
-      text: newTask,
-      completed: false,
-      createdAt: new Date(Date.now()),
-    };
-    setTasks((prev) => [...prev, readyTask]);
+
+  function TaskAction() {
+    addNewTask(newTask, setTasks);
     setNewTask("");
   }
+
   return (
     <div className="flex gap-[4%]">
       <input
@@ -49,7 +37,7 @@ export default function TaskInput({ setTasks }: TaskInputProps) {
         placeholder="Add a new task..."
       />
       <button
-        onClick={() => addNewTask()}
+        onClick={() => TaskAction()}
         className="w-[16%] rounded-lg bg-primary flex items-center justify-center cursor-pointer"
       >
         <FaPlus color="white" />

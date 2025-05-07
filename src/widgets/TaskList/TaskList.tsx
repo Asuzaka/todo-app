@@ -1,28 +1,16 @@
+import { Task } from "@/entities";
+import { DeleteTask, MarkTask } from "@/features/index";
 import { IoMdCheckmark } from "react-icons/io";
 import { LuTrash } from "react-icons/lu";
+import React from "react";
 
-interface Task {
-  id: string;
-  text: string;
-  completed: boolean;
-  createdAt: Date;
-}
+// Props
 interface TaskListProps {
   tasks: Task[];
   setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
 }
 
-export default function TaskList({ tasks, setTasks }: TaskListProps) {
-  function handleCheckClick(id: string) {
-    setTasks(
-      tasks.map((task) =>
-        task.id === id ? { ...task, completed: !task.completed } : task
-      )
-    );
-  }
-  function handleDelete(id: string) {
-    setTasks(tasks.filter((task) => task.id !== id));
-  }
+export function TaskList({ tasks, setTasks }: TaskListProps) {
   return (
     <div className="flex flex-col gap-3">
       {tasks.length === 0 ? (
@@ -38,7 +26,7 @@ export default function TaskList({ tasks, setTasks }: TaskListProps) {
             key={el.id}
           >
             <button
-              onClick={() => handleCheckClick(el.id)}
+              onClick={() => MarkTask(el.id, tasks, setTasks)}
               className={`flex items-center justify-center rounded-full min-w-6 min-h-6 cursor-pointer ${
                 el.completed ? "bg-primary" : "border border-border"
               }`}
@@ -55,7 +43,7 @@ export default function TaskList({ tasks, setTasks }: TaskListProps) {
                 {new Date(el.createdAt).toISOString().split("T")[0]}
               </span>
               <button
-                onClick={() => handleDelete(el.id)}
+                onClick={() => DeleteTask(el.id, tasks, setTasks)}
                 className="cursor-pointer"
               >
                 <LuTrash fontSize={14} />
